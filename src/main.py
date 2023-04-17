@@ -1,5 +1,6 @@
 from enlarge_dataset import create_large_dataset
 from pyspark_versions import pyspark_dataframe, pyspark_rdd, pyspark_sql, start_spark
+from native_python import native_python_count
 import time
 
 def main():
@@ -15,6 +16,11 @@ def main():
     start_time= time.time()
     pyspark_dataframe(dataset, spark)
     print(time.time() - start_time)
+
+    start_time= time.time()
+    native_python_count(dataset)
+    print(time.time() - start_time)
+    
 
    
 
