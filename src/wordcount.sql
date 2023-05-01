@@ -1,26 +1,8 @@
-CREATE TABLE text_file (id INT, line VARCHAR(1000));
+-- use regex to split words into table, then count words
+-- \s+ matches one or more whitespace characters
 
--- load text file into table (line by line)
-LOAD DATA INFILE '/data/shakespeare_processed.txt' INTO TABLE text_file (line);
-
--- split text into words with regular expression
-SELECT REGEXP_REPLACE(line, '[^a-zA-Z0-9 ]', '') AS words
-FROM text_file;
-
--- get frequency of words
-SELECT words, COUNT(*) AS frequency
+SELECT COUNT(word) AS word_count
 FROM (
-  SELECT REGEXP_REPLACE(line, '[^a-zA-Z0-9 ]', '') AS words
-  FROM text_file
-) t
-GROUP BY words;
-
--- words by frequency
-SELECT words, COUNT(*) AS frequency
-FROM (
-  SELECT REGEXP_REPLACE(line, '[^a-zA-Z0-9 ]', '') AS words
-  FROM text_file
-) t
-WHERE words != ''
-GROUP BY words
-ORDER BY frequency DESC;
+  SELECT regexp_split_to_table(text_col, '\s+') AS word
+  FROM shakespeare_processed sp 
+) AS word_table;
