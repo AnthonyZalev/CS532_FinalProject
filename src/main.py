@@ -10,19 +10,19 @@ def main():
     spark = start_spark()
 
     # Run Pyspark with RDD
-    start_time= time.time()
-    pyspark_rdd(dataset, spark)
-    print(time.time() - start_time)
+    #start_time= time.time()
+    #pyspark_rdd(dataset, spark)
+    #print(time.time() - start_time)
 
     # Run Pyspark with Dataframe
-    start_time= time.time()
-    pyspark_dataframe(dataset, spark)
-    print(time.time() - start_time)
+    #start_time= time.time()
+    #pyspark_dataframe(dataset, spark)
+    #print(time.time() - start_time)
 
     # Run Native Python Word Count
-    start_time= time.time()
-    native_python_count(dataset)
-    print(time.time() - start_time)
+    #start_time= time.time()
+    #native_python_count(dataset)
+    #print(time.time() - start_time)
     
 
    
