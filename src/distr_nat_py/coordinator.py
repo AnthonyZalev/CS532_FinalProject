@@ -2,15 +2,16 @@
 import socket
 from sys import getsizeof
 from threading import Thread
-import os
+import os, time
 
-NUM_WORKERS = 2
-HOST = host = 'elnux1.cs.umass.edu' # Change this depending on server
+
+NUM_WORKERS = 6
+HOST = host = 'elnux2.cs.umass.edu' # Change this depending on server
 port = 12345                        # Specify the port to connect to
-WORKER_PORTS = [12345, 12346]       # Scale this to number of workers  
+WORKER_PORTS = [12344, 12345, 12346, 12347, 12348, 12349]       # Scale this to number of workers  
 thread_list = []
 word_count_total = 0
-CHUNK_SIZE = 1024
+CHUNK_SIZE = 2048
 
 # Code From: https://coderslegacy.com/python/get-return-value-from-thread/
 class CustomThread(Thread):
@@ -36,7 +37,6 @@ def send_and_recv_thread(num, port_num, file, num_workers):
     file_size = os.path.getsize(file)
     bytes_to_send = int(file_size/num_workers)
     # Telling the server the size of the chunk:
-    print(bytes_to_send)
     s.send(str(bytes_to_send).encode('utf-8'))
     starting_pos = bytes_to_send*num
     f.seek(starting_pos, 0)
@@ -55,17 +55,29 @@ def send_and_recv_thread(num, port_num, file, num_workers):
     s.close()  # Close the socket when done
     return thread_wc
 
+files = ["C:/Users/MZambetti1/Documents/CS 677/Lab 3/CS532_FinalProject/src/data/shakespeare_processed_2048.txt"]
+#         "C:/Users/MZambetti1/Documents/CS 677/Lab 3/CS532_FinalProject/src/data/shakespeare_processed_16.txt",
+#         "C:/Users/MZambetti1/Documents/CS 677/Lab 3/CS532_FinalProject/src/data/shakespeare_processed_64.txt",
+#         "C:/Users/MZambetti1/Documents/CS 677/Lab 3/CS532_FinalProject/src/data/shakespeare_processed_256.txt",
+#         "C:/Users/MZambetti1/Documents/CS 677/Lab 3/CS532_FinalProject/src/data/shakespeare_processed_1024.txt",
+#         "C:/Users/MZambetti1/Documents/CS 677/Lab 3/CS532_FinalProject/src/data/shakespeare_processed_2048.txt",]
 
-for worker_idx in range(NUM_WORKERS):
-    tx = CustomThread(target=send_and_recv_thread,args=(worker_idx, 
-                            WORKER_PORTS[worker_idx], "data.txt",
-                            NUM_WORKERS))
-    tx.start()
-    thread_list.append(tx)
-    # Need to spawn a thread to send and recieve the data
-    pass
+for file in files:
+    start_time = time.time()
+    for worker_idx in range(NUM_WORKERS):
+        tx = CustomThread(target=send_and_recv_thread,args=(worker_idx, 
+                                WORKER_PORTS[worker_idx], 
+                                file,
+                                NUM_WORKERS))
+        tx.start()
+        thread_list.append(tx)
+        # Need to spawn a thread to send and recieve the data
+        pass
 
-for idx in range(NUM_WORKERS):
-    word_count_total += int(thread_list[idx].join())
+    for idx in range(NUM_WORKERS):
+        word_count_total += int(thread_list[idx].join())
+    print()
+    print(file)
+    print("Time taken:", time.time()-start_time)
+    print("Final word count=",word_count_total)
 
-print(word_count_total)
