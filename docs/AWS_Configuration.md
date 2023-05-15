@@ -75,9 +75,9 @@ Steps to get this configured:
     git clone https://github.com/AnthonyZalev/CS532_FinalProject
     ```
 
-9. Run the program to create the data files
+9. Run the program to create the data files. To do this, navigate to ```src\main.py``` and uncomment the enlarge data set function. This function takes in as a input the number of times the base file should be appeneded to itself.
 
-10. Run the word count programs in the src folder
+10. Run the word count programs in the src folder. To do this locally vs from the S3 bucket, navigate to the ```native_python.py, pyspark_df_job.py, and pyspark_rdd_job.py``` files and ensure the "Logfile" is pointed to the file you created in the previous step. Then from the root directory, run the programs as ```python3 src/<program_name_here>```. 
 
 ## AWS Configuration. Multi Node Setup
 
@@ -93,19 +93,21 @@ In this section we will be setting up a multi node cluster from the AWS Console.
 
 5. Name the cluster, and select the release label. Then choose the spark application.
 
-6. Configure the cluster by choosing Instance Groups. Choose the 'm4.large' node for your Primary, Core, and Task Nodes.
+6. Optionally choose the S3 bucket you created earlier as a log destination to store your console outputs and error messages.
 
-7. Provision 1 Core node and 6 Task nodes. Decide on if you want spot instances or not. If you do, you can save a lot of money. But if you don't, you can be sure that your cluster will be up and running.
+7. Configure the cluster by choosing Instance Groups. Choose the 'm4.large' node for your Primary, Core, and Task Nodes.
 
-8. Configure the security group. Make sure that you allow SSH access from anywhere.
+8. Provision 1 Core node and 6 Task nodes. Decide on if you want spot instances or not. If you do, you can save a lot of money. But if you don't, you can be sure that your cluster will be up and running.
 
-9. Select default service role and default EC2 role.
+9. Configure the security group. Make sure that you allow SSH access from anywhere.
 
-10. Click create cluster. The cluster can take many minutes to get running.
+10. Select default service role and default EC2 role.
 
-11. From the cluster page, click on the "Add Step" button.
+11. Click create cluster. The cluster can take many minutes to get running.
 
-12. Navigate to the S3 bucket and select the worker file. This will be the file that will be run on the cluster.
+12. From the cluster page, click on the "Add Step" button.
 
-13. Click "Add" and wait for the cluster to finish running.
+13. Navigate to the S3 bucket and select the worker file. This will be the file that will be run on the cluster.
+
+14. Click "Add" and wait for the cluster to finish running.
 
