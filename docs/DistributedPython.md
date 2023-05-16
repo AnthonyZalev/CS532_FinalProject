@@ -24,6 +24,6 @@ shakespeare_processed_2048_X.txt
 
 Where X ranges from 0 to n, where n is the number of workers. In simpler terms, there should be n copies of each file so that each node can process the file separately.
 ### Running
-In the same directory that you have the files in run the command: python worker.py <Port Number> <Worker Number>
+In the same directory that you have the files in run the command: python worker.py \<Port Number> \<Worker Number>
 
-Where <Port Number> is one of the ports specified in coordinator.py and <Worker Number> is one of the six X values from the setup section.
+Where \<Port Number> is one of the ports specified in coordinator.py and \<Worker Number> is one of the six X values from the setup section.
